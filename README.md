@@ -1,1 +1,0 @@
-# pubg-redeem-database
