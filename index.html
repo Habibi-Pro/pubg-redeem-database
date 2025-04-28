@@ -3,76 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ذخیره کدهای پابجی</title>
+  <title>ذخیره کد پابجی</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
+      background: #f9f9f9;
+      padding: 20px;
     }
     .container {
-      width: 80%;
-      margin: 50px auto;
-      background-color: #fff;
+      background: #fff;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
     }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    .input-container input {
+    select, input, button {
       width: 100%;
-      padding: 8px;
-      margin: 5px 0;
-      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 16px;
     }
-    .buttons button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+    button {
+      background: #4CAF50;
+      color: #fff;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
-    .buttons button:hover {
-      background-color: #45a049;
+    button:hover {
+      background: #45a049;
+    }
+    .description {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+      background: #eef;
+      padding: 10px;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>ذخیره کدهای پابجی</h2>
+  <h2>افزودن کد جدید</h2>
 
-  <div class="input-container">
-    <input type="text" id="name" placeholder="نام کاربری">
-    <input type="text" id="id" placeholder="آی‌دی پابجی">
-    <input type="text" id="code" placeholder="کد ریدیم">
-    <button onclick="saveCode()">ذخیره</button>
+  <select id="uc-type" onchange="updateDescription()">
+    <option value="">انتخاب نوع UC</option>
+    <option value="60">60 UC</option>
+    <option value="325">325 UC</option>
+    <option value="660">660 UC</option>
+    <option value="1800">1800 UC</option>
+    <option value="3850">3850 UC</option>
+    <option value="8100">8100 UC</option>
+  </select>
+
+  <div class="description" id="description">
+    لطفاً نوع UC را انتخاب کنید.
   </div>
-  <p><a href="saved-codes.html">مشاهده کدهای ذخیره شده</a></p>
+
+  <input type="text" id="redeem-code" placeholder="کد ریدیم پابجی را وارد کنید">
+
+  <button onclick="saveCode()">ذخیره کد</button>
+
 </div>
 
 <script>
-  function saveCode() {
-    const name = document.getElementById('name').value;
-    const id = document.getElementById('id').value;
-    const code = document.getElementById('code').value;
-    
-    if (name && id && code) {
-      const storedCodes = JSON.parse(localStorage.getItem('codes')) || [];
-      storedCodes.push({ name, id, code });
-      localStorage.setItem('codes', JSON.stringify(storedCodes));
-
-      alert('کد با موفقیت ذخیره شد!');
-    } else {
-      alert('لطفاً تمام فیلدها را پر کنید.');
-    }
+function updateDescription() {
+  const type = document.getElementById('uc-type').value;
+  const desc = document.getElementById('description');
+  if (type) {
+    desc.innerText = `PUBG MOBILE ${type} UC Redemption Code`;
+  } else {
+    desc.innerText = 'لطفاً نوع UC را انتخاب کنید.';
   }
+}
+
+function saveCode() {
+  const type = document.getElementById('uc-type').value;
+  const code = document.getElementById('redeem-code').value.trim();
+
+  if (!type || !code) {
+    alert('لطفاً نوع UC و کد را کامل وارد کنید.');
+    return;
+  }
+
+  const savedCodes = JSON.parse(localStorage.getItem('codes') || '{}');
+
+  if (!savedCodes[type]) {
+    savedCodes[type] = [];
+  }
+
+  savedCodes[type].push({
+    code: code,
+    description: `PUBG MOBILE ${type} UC Redemption Code`,
+    used: false
+  });
+
+  localStorage.setItem('codes', JSON.stringify(savedCodes));
+
+  alert('کد با موفقیت ذخیره شد!');
+  document.getElementById('uc-type').value = '';
+  document.getElementById('description').innerText = 'لطفاً نوع UC را انتخاب کنید.';
+  document.getElementById('redeem-code').value = '';
+}
 </script>
 
 </body>
