@@ -104,16 +104,27 @@
     const codeText = codeElement.querySelector('span');
     const codeValue = codeText.textContent === '*******' ? 'ActualCode' : codeText.textContent;
 
-    navigator.clipboard.writeText(codeValue)
-      .then(() => {
-        document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
-        codeText.textContent = codeValue;
-        codeElement.classList.remove('green');
-        codeElement.classList.add('red');
-      })
-      .catch(() => {
-        document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
-      });
+    // Show prompt for explanation when copying
+    const name = document.getElementById('name-' + codeId);
+    const id = document.getElementById('id-' + codeId);
+    
+    if (name.value && id.value) {
+      const explanation = `نام کاربری: ${name.value}, آی‌دی: ${id.value}`;
+      if (confirm(`آیا می‌خواهید کد را کپی کنید؟\n${explanation}`)) {
+        navigator.clipboard.writeText(codeValue)
+          .then(() => {
+            document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
+            codeText.textContent = codeValue;
+            codeElement.classList.remove('green');
+            codeElement.classList.add('red');
+          })
+          .catch(() => {
+            document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
+          });
+      }
+    } else {
+      alert("لطفاً نام کاربری و آی‌دی را وارد کنید.");
+    }
   }
 
   function deleteCode(codeId) {
