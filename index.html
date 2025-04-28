@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PUBG Mobile Redeem Codes</title>
+  <title>ذخیره کدهای پابجی</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,35 +23,12 @@
       text-align: center;
       color: #333;
     }
-    .code-section {
-      margin-bottom: 20px;
-      padding: 15px;
-      background-color: #eaeaea;
-      border-radius: 8px;
-    }
-    .code {
-      font-size: 18px;
-      background-color: #ddd;
-      padding: 10px;
-      border-radius: 4px;
-      margin: 5px 0;
-    }
-    .green {
-      background-color: #c8e6c9;
-    }
-    .red {
-      background-color: #ffcdd2;
-    }
-    .code input {
+    .input-container input {
       width: 100%;
       padding: 8px;
       margin: 5px 0;
       border-radius: 4px;
       border: 1px solid #ccc;
-    }
-    .buttons {
-      display: flex;
-      justify-content: space-between;
     }
     .buttons button {
       padding: 10px 20px;
@@ -64,93 +41,36 @@
     .buttons button:hover {
       background-color: #45a049;
     }
-    .message {
-      font-size: 14px;
-      color: #4CAF50;
-      text-align: center;
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>PUBG Mobile Redeem Codes</h2>
+  <h2>ذخیره کدهای پابجی</h2>
 
-  <!-- 60 UC Codes Section -->
-  <div id="code-section-60uc" class="code-section">
-    <h3>60 UC Codes</h3>
-    <div class="code green" id="code-60uc">
-      <span id="code-60uc-text">*******</span>
-      <div class="buttons">
-        <button onclick="copyCode('code-60uc')">کپی کردن</button>
-        <button onclick="deleteCode('code-60uc')">حذف</button>
-      </div>
-      <div class="input-container">
-        <input type="text" id="name-60uc" placeholder="نام کاربری">
-        <input type="text" id="id-60uc" placeholder="آی‌دی پابجی">
-        <button onclick="saveCode('60uc')">ذخیره</button>
-      </div>
-    </div>
+  <div class="input-container">
+    <input type="text" id="name" placeholder="نام کاربری">
+    <input type="text" id="id" placeholder="آی‌دی پابجی">
+    <input type="text" id="code" placeholder="کد ریدیم">
+    <button onclick="saveCode()">ذخیره</button>
   </div>
-
-  <!-- 325 UC Codes Section -->
-  <div id="code-section-325uc" class="code-section">
-    <h3>325 UC Codes</h3>
-    <div class="code green" id="code-325uc">
-      <span id="code-325uc-text">*******</span>
-      <div class="buttons">
-        <button onclick="copyCode('code-325uc')">کپی کردن</button>
-        <button onclick="deleteCode('code-325uc')">حذف</button>
-      </div>
-      <div class="input-container">
-        <input type="text" id="name-325uc" placeholder="نام کاربری">
-        <input type="text" id="id-325uc" placeholder="آی‌دی پابجی">
-        <button onclick="saveCode('325uc')">ذخیره</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- You can add more sections for other UC amounts (660, 1800, etc.) in a similar way -->
-
-  <div class="message" id="message"></div>
+  <p><a href="saved-codes.html">مشاهده کدهای ذخیره شده</a></p>
 </div>
 
 <script>
-  function copyCode(codeId) {
-    const codeElement = document.getElementById(codeId);
-    const codeText = codeElement.querySelector('span');
-    const codeValue = codeText.textContent === '*******' ? 'ActualCode' : codeText.textContent;
-
-    navigator.clipboard.writeText(codeValue)
-      .then(() => {
-        document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
-        codeText.textContent = codeValue;
-        codeElement.classList.remove('green');
-        codeElement.classList.add('red');
-      })
-      .catch(() => {
-        document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
-      });
-  }
-
-  function deleteCode(codeId) {
-    const codeElement = document.getElementById(codeId);
-    codeElement.querySelector('span').textContent = '*******';
-    codeElement.classList.remove('red');
-    codeElement.classList.add('green');
-    document.getElementById('message').textContent = '';
-  }
-
-  function saveCode(ucType) {
-    const nameInput = document.getElementById('name-' + ucType);
-    const idInput = document.getElementById('id-' + ucType);
+  function saveCode() {
+    const name = document.getElementById('name').value;
+    const id = document.getElementById('id').value;
+    const code = document.getElementById('code').value;
     
-    if (nameInput.value && idInput.value) {
-      document.getElementById(ucType + '-text').textContent = 'نام: ' + nameInput.value + ', آی‌دی: ' + idInput.value;
-      document.getElementById('message').textContent = 'اطلاعات ذخیره شد!';
+    if (name && id && code) {
+      const storedCodes = JSON.parse(localStorage.getItem('codes')) || [];
+      storedCodes.push({ name, id, code });
+      localStorage.setItem('codes', JSON.stringify(storedCodes));
+
+      alert('کد با موفقیت ذخیره شد!');
     } else {
-      document.getElementById('message').textContent = 'لطفاً تمام فیلدها را پر کنید.';
+      alert('لطفاً تمام فیلدها را پر کنید.');
     }
   }
 </script>
