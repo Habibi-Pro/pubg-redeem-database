@@ -77,6 +77,7 @@
 <div class="container">
   <h2>PUBG Mobile Redeem Codes</h2>
 
+  <!-- 60 UC Codes Section -->
   <div id="code-section-60uc" class="code-section">
     <h3>60 UC Codes</h3>
     <div class="code green" id="code-60uc">
@@ -93,7 +94,24 @@
     </div>
   </div>
 
-  <!-- Additional sections for 325, 660, 1800, 3850, 8100 UC can follow the same structure -->
+  <!-- 325 UC Codes Section -->
+  <div id="code-section-325uc" class="code-section">
+    <h3>325 UC Codes</h3>
+    <div class="code green" id="code-325uc">
+      <span id="code-325uc-text">*******</span>
+      <div class="buttons">
+        <button onclick="copyCode('code-325uc')">کپی کردن</button>
+        <button onclick="deleteCode('code-325uc')">حذف</button>
+      </div>
+      <div class="input-container">
+        <input type="text" id="name-325uc" placeholder="نام کاربری">
+        <input type="text" id="id-325uc" placeholder="آی‌دی پابجی">
+        <button onclick="saveCode('325uc')">ذخیره</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- You can add more sections for other UC amounts (660, 1800, etc.) in a similar way -->
 
   <div class="message" id="message"></div>
 </div>
@@ -104,27 +122,16 @@
     const codeText = codeElement.querySelector('span');
     const codeValue = codeText.textContent === '*******' ? 'ActualCode' : codeText.textContent;
 
-    // Show prompt for explanation when copying
-    const name = document.getElementById('name-' + codeId);
-    const id = document.getElementById('id-' + codeId);
-    
-    if (name.value && id.value) {
-      const explanation = `نام کاربری: ${name.value}, آی‌دی: ${id.value}`;
-      if (confirm(`آیا می‌خواهید کد را کپی کنید؟\n${explanation}`)) {
-        navigator.clipboard.writeText(codeValue)
-          .then(() => {
-            document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
-            codeText.textContent = codeValue;
-            codeElement.classList.remove('green');
-            codeElement.classList.add('red');
-          })
-          .catch(() => {
-            document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
-          });
-      }
-    } else {
-      alert("لطفاً نام کاربری و آی‌دی را وارد کنید.");
-    }
+    navigator.clipboard.writeText(codeValue)
+      .then(() => {
+        document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
+        codeText.textContent = codeValue;
+        codeElement.classList.remove('green');
+        codeElement.classList.add('red');
+      })
+      .catch(() => {
+        document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
+      });
   }
 
   function deleteCode(codeId) {
