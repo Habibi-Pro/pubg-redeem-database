@@ -2,180 +2,139 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>Pubg Mobile Redeem Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUBG Mobile Redeem Codes</title>
   <style>
     body {
-      background: #f0f2f5;
-      font-family: "Vazirmatn", sans-serif;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
       text-align: center;
       color: #333;
+    }
+    .code-section {
       margin-bottom: 20px;
-    }
-    #codeList {
-      display: grid;
-      gap: 20px;
-    }
-    .card {
-      background: #e0f7e9;
-      border: 1px solid #b2dfdb;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: background 0.3s, transform 0.2s;
-      position: relative;
-    }
-    .card.used {
-      background: #ffebee;
-      border: 1px solid #ef9a9a;
-    }
-    .card:hover {
-      transform: scale(1.02);
+      padding: 15px;
+      background-color: #eaeaea;
+      border-radius: 8px;
     }
     .code {
-      font-size: 20px;
-      font-weight: bold;
-      color: #444;
-      user-select: none;
-      margin-bottom: 10px;
-    }
-    .explanation {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #777;
-    }
-    button {
-      background: #26a69a;
-      border: none;
-      padding: 8px 16px;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-right: 10px;
-    }
-    button:hover {
-      background: #00796b;
-    }
-    .deleteBtn {
-      background: #ef5350;
-    }
-    .deleteBtn:hover {
-      background: #c62828;
-    }
-    #addForm {
-      margin-bottom: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    #addForm select, #addForm input {
+      font-size: 18px;
+      background-color: #ddd;
       padding: 10px;
+      border-radius: 4px;
+      margin: 5px 0;
+    }
+    .green {
+      background-color: #c8e6c9;
+    }
+    .red {
+      background-color: #ffcdd2;
+    }
+    .code input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 4px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buttons button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      font-size: 14px;
+      color: #4CAF50;
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<h1>Pubg Mobile Redeem Code</h1>
+<div class="container">
+  <h2>PUBG Mobile Redeem Codes</h2>
 
-<div id="addForm">
-  <input type="text" id="newCode" placeholder="کد جدید را وارد کنید...">
-  <select id="ucAmount">
-    <option value="60 UC">60 UC</option>
-    <option value="325 UC">325 UC</option>
-    <option value="660 UC">660 UC</option>
-    <option value="1800 UC">1800 UC</option>
-    <option value="3850 UC">3850 UC</option>
-    <option value="8100 UC">8100 UC</option>
-  </select>
-  <button onclick="addCode()">افزودن کد</button>
+  <div id="code-section-60uc" class="code-section">
+    <h3>60 UC Codes</h3>
+    <div class="code green" id="code-60uc">
+      <span id="code-60uc-text">*******</span>
+      <div class="buttons">
+        <button onclick="copyCode('code-60uc')">کپی کردن</button>
+        <button onclick="deleteCode('code-60uc')">حذف</button>
+      </div>
+      <div class="input-container">
+        <input type="text" id="name-60uc" placeholder="نام کاربری">
+        <input type="text" id="id-60uc" placeholder="آی‌دی پابجی">
+        <button onclick="saveCode('60uc')">ذخیره</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional sections for 325, 660, 1800, 3850, 8100 UC can follow the same structure -->
+
+  <div class="message" id="message"></div>
 </div>
 
-<div id="codeList"></div>
-
 <script>
-  let codes = JSON.parse(localStorage.getItem("codes")) || [];
+  function copyCode(codeId) {
+    const codeElement = document.getElementById(codeId);
+    const codeText = codeElement.querySelector('span');
+    const codeValue = codeText.textContent === '*******' ? 'ActualCode' : codeText.textContent;
 
-  function saveCodes() {
-    localStorage.setItem("codes", JSON.stringify(codes));
+    navigator.clipboard.writeText(codeValue)
+      .then(() => {
+        document.getElementById('message').textContent = 'کد با موفقیت کپی شد!';
+        codeText.textContent = codeValue;
+        codeElement.classList.remove('green');
+        codeElement.classList.add('red');
+      })
+      .catch(() => {
+        document.getElementById('message').textContent = 'خطا در کپی کردن کد.';
+      });
   }
 
-  function renderCodes() {
-    const codeList = document.getElementById('codeList');
-    codeList.innerHTML = "";
-    codes.forEach((code, index) => {
-      const card = document.createElement('div');
-      card.className = 'card' + (code.used ? ' used' : '');
-      
-      const codeText = document.createElement('div');
-      codeText.className = 'code';
-      codeText.textContent = code.used ? code.realCode : '***************';
-      card.appendChild(codeText);
-
-      if (code.explanation) {
-        const explanation = document.createElement('div');
-        explanation.className = 'explanation';
-        explanation.textContent = 'توضیحات: ' + code.explanation;
-        card.appendChild(explanation);
-      }
-
-      const copyBtn = document.createElement('button');
-      copyBtn.textContent = code.used ? 'استفاده شده' : 'برای استفاده کلیک کن';
-      copyBtn.disabled = code.used;
-      copyBtn.onclick = () => copyCode(index);
-      card.appendChild(copyBtn);
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'حذف';
-      deleteBtn.className = 'deleteBtn';
-      deleteBtn.onclick = () => deleteCode(index);
-      card.appendChild(deleteBtn);
-
-      codeList.appendChild(card);
-    });
+  function deleteCode(codeId) {
+    const codeElement = document.getElementById(codeId);
+    codeElement.querySelector('span').textContent = '*******';
+    codeElement.classList.remove('red');
+    codeElement.classList.add('green');
+    document.getElementById('message').textContent = '';
   }
 
-  function addCode() {
-    const newCode = document.getElementById('newCode').value.trim();
-    const ucAmount = document.getElementById('ucAmount').value;
-    if (!newCode) {
-      alert('لطفاً یک کد وارد کنید.');
-      return;
-    }
-    codes.push({ realCode: newCode, amount: ucAmount, used: false, explanation: '' });
-    saveCodes();
-    renderCodes();
-    document.getElementById('newCode').value = "";
-  }
-
-  function copyCode(index) {
-    const explanation = prompt('لطفاً توضیحات را وارد کنید (مثلاً نام بازیکن و آیدی):');
-    if (explanation === null || explanation.trim() === "") {
-      alert('کپی لغو شد.');
-      return;
-    }
-    navigator.clipboard.writeText(codes[index].realCode).then(() => {
-      alert('کد کپی شد!');
-      codes[index].used = true;
-      codes[index].explanation = explanation.trim();
-      saveCodes();
-      renderCodes();
-    });
-  }
-
-  function deleteCode(index) {
-    if (confirm('آیا مطمئن هستید که می‌خواهید این کد را حذف کنید؟')) {
-      codes.splice(index, 1);
-      saveCodes();
-      renderCodes();
+  function saveCode(ucType) {
+    const nameInput = document.getElementById('name-' + ucType);
+    const idInput = document.getElementById('id-' + ucType);
+    
+    if (nameInput.value && idInput.value) {
+      document.getElementById(ucType + '-text').textContent = 'نام: ' + nameInput.value + ', آی‌دی: ' + idInput.value;
+      document.getElementById('message').textContent = 'اطلاعات ذخیره شد!';
+    } else {
+      document.getElementById('message').textContent = 'لطفاً تمام فیلدها را پر کنید.';
     }
   }
-
-  renderCodes();
 </script>
 
 </body>
