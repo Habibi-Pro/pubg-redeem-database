@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کدهای ذخیره شده</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .code-box {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #eaeaea;
+      border-radius: 8px;
+    }
+    .code-box .code {
+      font-size: 18px;
+      background-color: #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 5px 0;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buttons button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>کدهای ذخیره شده</h2>
+
+  <div id="saved-codes"></div>
+
+  <p><a href="index.html">برگشت به صفحه ذخیره کد</a></p>
+</div>
+
+<script>
+  function displayCodes() {
+    const savedCodes = JSON.parse(localStorage.getItem('codes')) || [];
+    const codesContainer = document.getElementById('saved-codes');
+    codesContainer.innerHTML = ''; // Clear previous data
+
+    savedCodes.forEach((code, index) => {
+      const codeBox = document.createElement('div');
+      codeBox.classList.add('code-box');
+
+      const codeText = document.createElement('div');
+      codeText.classList.add('code');
+      codeText.textContent = `کد: ${code.code}, نام: ${code.name}, آی‌دی: ${code.id}`;
+
+      const buttons = document.createElement('div');
+      buttons.classList.add('buttons');
+
+      const copyButton = document.createElement('button');
+      copyButton.textContent = 'کپی کردن';
+      copyButton.onclick = () => copyCode(code.code);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'حذف';
+      deleteButton.onclick = () => deleteCode(index);
+
+      buttons.appendChild(copyButton);
+      buttons.appendChild(deleteButton);
+
+      codeBox.appendChild(codeText);
+      codeBox.appendChild(buttons);
+      codesContainer.appendChild(codeBox);
+    });
+  }
+
+  function copyCode(code) {
+    navigator.clipboard.writeText(code)
+      .then(() => alert('کد با موفقیت کپی شد!'))
+      .catch(() => alert('خطا در کپی کردن کد.'));
+  }
+
+  function deleteCode(index) {
+    const savedCodes = JSON.parse(localStorage.getItem('codes')) || [];
+    savedCodes.splice(index, 1);
+    localStorage.setItem('codes', JSON.stringify(savedCodes));
+    displayCodes();
+  }
+
+  displayCodes(); // Display saved codes when the page loads
+</script>
+
+</body>
+</html>
