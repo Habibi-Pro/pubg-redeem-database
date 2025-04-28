@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>Pubg Mobile Redeem Code</title>
+  <style>
+    body {
+      background: #f0f2f5;
+      font-family: "Vazirmatn", sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    #codeList {
+      display: grid;
+      gap: 20px;
+    }
+    .card {
+      background: #e0f7e9;
+      border: 1px solid #b2dfdb;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: background 0.3s, transform 0.2s;
+      position: relative;
+    }
+    .card.used {
+      background: #ffebee;
+      border: 1px solid #ef9a9a;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .code {
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+    .explanation {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #777;
+    }
+    button {
+      background: #26a69a;
+      border: none;
+      padding: 8px 16px;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #00796b;
+    }
+    .deleteBtn {
+      background: #ef5350;
+    }
+    .deleteBtn:hover {
+      background: #c62828;
+    }
+    #addForm {
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #addForm select, #addForm input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Pubg Mobile Redeem Code</h1>
+
+<div id="addForm">
+  <input type="text" id="newCode" placeholder="کد جدید را وارد کنید...">
+  <select id="ucAmount">
+    <option value="60 UC">60 UC</option>
+    <option value="325 UC">325 UC</option>
+    <option value="660 UC">660 UC</option>
+    <option value="1800 UC">1800 UC</option>
+    <option value="3850 UC">3850 UC</option>
+    <option value="8100 UC">8100 UC</option>
+  </select>
+  <button onclick="addCode()">افزودن کد</button>
+</div>
+
+<div id="codeList"></div>
+
+<script>
+  let codes = JSON.parse(localStorage.getItem("codes")) || [];
+
+  function saveCodes() {
+    localStorage.setItem("codes", JSON.stringify(codes));
+  }
+
+  function renderCodes() {
+    const codeList = document.getElementById('codeList');
+    codeList.innerHTML = "";
+    codes.forEach((code, index) => {
+      const card = document.createElement('div');
+      card.className = 'card' + (code.used ? ' used' : '');
+      
+      const codeText = document.createElement('div');
+      codeText.className = 'code';
+      codeText.textContent = code.used ? code.realCode : '***************';
+      card.appendChild(codeText);
+
+      if (code.explanation) {
+        const explanation = document.createElement('div');
+        explanation.className = 'explanation';
+        explanation.textContent = 'توضیحات: ' + code.explanation;
+        card.appendChild(explanation);
+      }
+
+      const copyBtn = document.createElement('button');
+      copyBtn.textContent = code.used ? 'استفاده شده' : 'برای استفاده کلیک کن';
+      copyBtn.disabled = code.used;
+      copyBtn.onclick = () => copyCode(index);
+      card.appendChild(copyBtn);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'حذف';
+      deleteBtn.className = 'deleteBtn';
+      deleteBtn.onclick = () => deleteCode(index);
+      card.appendChild(deleteBtn);
+
+      codeList.appendChild(card);
+    });
+  }
+
+  function addCode() {
+    const newCode = document.getElementById('newCode').value.trim();
+    const ucAmount = document.getElementById('ucAmount').value;
+    if (!newCode) {
+      alert('لطفاً یک کد وارد کنید.');
+      return;
+    }
+    codes.push({ realCode: newCode, amount: ucAmount, used: false, explanation: '' });
+    saveCodes();
+    renderCodes();
+    document.getElementById('newCode').value = "";
+  }
+
+  function copyCode(index) {
+    const explanation = prompt('لطفاً توضیحات را وارد کنید (مثلاً نام بازیکن و آیدی):');
+    if (explanation === null || explanation.trim() === "") {
+      alert('کپی لغو شد.');
+      return;
+    }
+    navigator.clipboard.writeText(codes[index].realCode).then(() => {
+      alert('کد کپی شد!');
+      codes[index].used = true;
+      codes[index].explanation = explanation.trim();
+      saveCodes();
+      renderCodes();
+    });
+  }
+
+  function deleteCode(index) {
+    if (confirm('آیا مطمئن هستید که می‌خواهید این کد را حذف کنید؟')) {
+      codes.splice(index, 1);
+      saveCodes();
+      renderCodes();
+    }
+  }
+
+  renderCodes();
+</script>
+
+</body>
+</html>
