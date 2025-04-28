@@ -3,110 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>کدهای ذخیره شده</title>
+  <title>مدیریت کدهای پابجی</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
+      background: #f4f4f4;
+      padding: 20px;
     }
     .container {
-      width: 80%;
-      margin: 50px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 1000px;
+      margin: auto;
     }
-    h2 {
-      text-align: center;
+    .uc-box {
+      background: #fff;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .uc-title {
+      font-size: 20px;
+      margin-bottom: 10px;
       color: #333;
     }
-    .code-box {
-      margin-bottom: 20px;
-      padding: 15px;
-      background-color: #eaeaea;
-      border-radius: 8px;
-    }
-    .code-box .code {
-      font-size: 18px;
-      background-color: #ddd;
+    .code-item {
+      background: #e7f3ff;
+      margin-bottom: 10px;
       padding: 10px;
-      border-radius: 4px;
-      margin: 5px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .buttons button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+    .used {
+      background: #ffcdd2 !important;
+    }
+    button {
+      margin-left: 5px;
+      padding: 5px 10px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
     }
-    .buttons button:hover {
-      background-color: #45a049;
+    .copy-btn {
+      background: #4CAF50;
+      color: #fff;
+    }
+    .mark-btn {
+      background: #f44336;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>کدهای ذخیره شده</h2>
-
-  <div id="saved-codes"></div>
-
-  <p><a href="index.html">برگشت به صفحه ذخیره کد</a></p>
+<div class="container" id="codes-container">
+  <!-- کدها اینجا ساخته می‌شوند -->
 </div>
 
 <script>
-  function displayCodes() {
-    const savedCodes = JSON.parse(localStorage.getItem('codes')) || [];
-    const codesContainer = document.getElementById('saved-codes');
-    codesContainer.innerHTML = ''; // Clear previous data
+function loadCodes() {
+  const savedCodes = JSON.parse(localStorage.getItem('codes') || '{}');
+  const container = document.getElementById('codes-container');
+  container.innerHTML = '';
 
-    savedCodes.forEach((code, index) => {
-      const codeBox = document.createElement('div');
-      codeBox.classList.add('code-box');
+  const ucTypes = ['60', '325', '660', '1800', '3850', '8100'];
 
-      const codeText = document.createElement('div');
-      codeText.classList.add('code');
-      codeText.textContent = `کد: ${code.code}, نام: ${code.name}, آی‌دی: ${code.id}`;
+  ucTypes.forEach(type => {
+    if (savedCodes[type] && savedCodes[type].length > 0) {
+      const box = document.createElement('div');
+      box.className = 'uc-box';
 
-      const buttons = document.createElement('div');
-      buttons.classList.add('buttons');
+      const title = document.createElement('div');
+      title.className = 'uc-title';
+      title.innerText = `${type} UC Codes`;
+      box.appendChild(title);
 
-      const copyButton = document.createElement('button');
-      copyButton.textContent = 'کپی کردن';
-      copyButton.onclick = () => copyCode(code.code);
+      savedCodes[type].forEach((item, index) => {
+        const codeDiv = document.createElement('div');
+        codeDiv.className = 'code-item';
+        if (item.used) codeDiv.classList.add('used');
 
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'حذف';
-      deleteButton.onclick = () => deleteCode(index);
+        codeDiv.innerHTML = `
+          <div>
+            <div><strong>کد:</strong> ${item.code}</div>
+            <div><small>${item.description}</small></div>
+          </div>
+          <div>
+            <button class="copy-btn" onclick="copyCode('${type}', ${index})">کپی</button>
+            <button class="mark-btn" onclick="toggleUsed('${type}', ${index})">
+              ${item.used ? 'بازگرداندن' : 'استفاده شد'}
+            </button>
+          </div>
+        `;
 
-      buttons.appendChild(copyButton);
-      buttons.appendChild(deleteButton);
+        box.appendChild(codeDiv);
+      });
 
-      codeBox.appendChild(codeText);
-      codeBox.appendChild(buttons);
-      codesContainer.appendChild(codeBox);
-    });
-  }
+      container.appendChild(box);
+    }
+  });
+}
 
-  function copyCode(code) {
-    navigator.clipboard.writeText(code)
-      .then(() => alert('کد با موفقیت کپی شد!'))
-      .catch(() => alert('خطا در کپی کردن کد.'));
-  }
+function copyCode(type, index) {
+  const savedCodes = JSON.parse(localStorage.getItem('codes') || '{}');
+  const code = savedCodes[type][index].code;
+  navigator.clipboard.writeText(code)
+    .then(() => alert('کد کپی شد!'))
+    .catch(() => alert('مشکل در کپی کردن کد.'));
+}
 
-  function deleteCode(index) {
-    const savedCodes = JSON.parse(localStorage.getItem('codes')) || [];
-    savedCodes.splice(index, 1);
-    localStorage.setItem('codes', JSON.stringify(savedCodes));
-    displayCodes();
-  }
+function toggleUsed(type, index) {
+  const savedCodes = JSON.parse(localStorage.getItem('codes') || '{}');
+  savedCodes[type][index].used = !savedCodes[type][index].used;
+  localStorage.setItem('codes', JSON.stringify(savedCodes));
+  loadCodes();
+}
 
-  displayCodes(); // Display saved codes when the page loads
+window.onload = loadCodes;
 </script>
 
 </body>
