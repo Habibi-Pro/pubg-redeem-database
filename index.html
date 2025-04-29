@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ذخیره کد پابجی</title>
+  <link rel="stylesheet" href="css/index-style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>افزودن کد جدید</h2>
+    <select id="uc-type" onchange="updateDescription()">
+      <option value="">انتخاب نوع UC</option>
+      <option value="60">60 UC</option>
+      <option value="325">325 UC</option>
+      <option value="660">660 UC</option>
+      <option value="1800">1800 UC</option>
+      <option value="3850">3850 UC</option>
+      <option value="8100">8100 UC</option>
+    </select>
+    <div class="description" id="description">لطفاً نوع UC را انتخاب کنید.</div>
+    <input type="text" id="redeem-code" placeholder="کد ریدیم پابجی را وارد کنید" />
+    <button onclick="saveCode()">ذخیره کد</button>
+  </div>
+  <div style="text-align: center; margin-top: 20px;">
+    <button onclick="window.location.href='saved.html'">دیدن کدهای ذخیره شده</button>
+  </div>
+  
+  <script src="js/index.js"></script>
+</body>
+</html>

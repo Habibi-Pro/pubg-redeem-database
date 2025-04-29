@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f4f8;
+    direction: rtl;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 28px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+}
+
+#searchInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.uc-box {
+    margin-bottom: 30px;
+    border: 2px dashed #007bff;
+    border-radius: 14px;
+    background-color: #fafbff;
+    overflow: hidden;
+}
+
+.uc-header {
+    background-color: #007bff;
+    color: rgb(13, 210, 224);
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.uc-header:hover {
+    background-color: #0056b3;
+}
+
+.uc-box.opened .uc-header {
+    background-color: #0056b3;
+}
+
+.uc-codes {
+    padding: 20px;
+    background-color: #e9c3c3;
+    border-top: 1px solid #534949;
+}
+
+.code-entry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* ۴ ستون مساوی */
+  gap: 10px;
+  background-color: #44c26e;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.code-entry.used {
+  background-color: #f36d4b;
+  border-color: #924545;
+}
+
+.code-entry.copied:not(.used) {
+  background-color: #f36363;
+  border-color: #0984e3;
+}
+
+.code-entry.copied.used {
+  background-color: #ffe6ff;
+  border-color: #be2edd;
+}
+
+
+.code-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.code-cell strong {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.actions button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .code-entry {
+      grid-template-columns: repeat(2, 1fr); /* در موبایل، دو ستونه میشه */
+  }
+}
+
+
+
+
+.alert-message {
+    display: none;
+    background-color: #ffe1e1;
+    color: #d8000c;
+    padding: 15px;
+    border: 1px solid #d8000c;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    #searchInput {
+        font-size: 14px;
+    }
+
+    .code-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
